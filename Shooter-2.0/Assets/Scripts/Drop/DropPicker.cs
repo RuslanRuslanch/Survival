@@ -9,6 +9,7 @@ public class DropPicker : MonoBehaviour
     [SerializeField] private Inventory _inventory;
 
     [Header("Pick UP")]
+    [SerializeField] private Player _player;
     [SerializeField] private Camera _camera;
     [Space]
     [SerializeField, Min(0f)] private float _maxDistance;
@@ -40,14 +41,12 @@ public class DropPicker : MonoBehaviour
         {
             return false;
         }
-        if (hit.collider.TryGetComponent(out Drop drop) == false)
+        if (hit.collider.TryGetComponent(out DropBase drop) == false)
         {
             return false;
         }
 
-        _inventory.Add(drop.Stack);
-
-        drop.TryPick();
+        drop.TryPick(_player);
 
         return true;
     }

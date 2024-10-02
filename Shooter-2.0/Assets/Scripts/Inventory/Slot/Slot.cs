@@ -4,14 +4,42 @@ using UnityEngine;
 public class Slot : MonoBehaviour
 {
     public int Amount { get; private set; }
-    public Item Item { get; private set; }
+    public ItemInfo Item { get; private set; }
 
     public bool IsFree => Item == null;
 
     public event Action SlotCleared;
     public event Action SlotChanged;
 
-    public void Add(ItemStack stack)
+    public bool TryAdd(ItemStack stack)
+    {
+        if ((Amount + stack.Amount) > Item.MaxAmount)
+        {
+            return false;
+        }
+
+        Add(stack);
+
+        return true;
+    }
+
+    public bool TryTake(ItemStack stack)
+    {
+        if (IsFree)
+        {
+            return false;
+        }
+        if ((Amount - stack.Amount) < 0)
+        {
+            return false;
+        }
+
+        Take(stack);
+
+        return true;
+    }
+
+    private void Add(ItemStack stack)
     {
         if (IsFree)
         {
@@ -23,13 +51,8 @@ public class Slot : MonoBehaviour
         SlotChanged?.Invoke();
     }
 
-    public void Remove(ItemStack stack)
+    private void Take(ItemStack stack)
     {
-        if (IsFree)
-        {
-            throw new NullReferenceException(nameof(Item));
-        }
-
         Amount -= stack.Amount;
 
         SlotChanged?.Invoke();
@@ -46,25 +69,5 @@ public class Slot : MonoBehaviour
         Amount = 0;
 
         SlotCleared?.Invoke();
-    }
-
-    public bool CanAdd(int amount)
-    {
-        if (IsFree)
-        {
-            return true;
-        }
-
-        return (Amount + amount) <= Item.Info.MaxAmount;
-    }
-
-    public bool CanTake(int amount)
-    {
-        if (IsFree)
-        {
-            return false;
-        }
-
-        return (Amount - amount) >= 0;
     }
 }

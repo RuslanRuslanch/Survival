@@ -16,41 +16,56 @@ public class Inventory : MonoBehaviour
     {
         foreach (var stack in _startItems)
         {
-            Add(stack);
+            TryAdd(stack);
         }
     }
 
-    public void Add(ItemStack stack)
+    public bool TryAdd(ItemStack stack)
     {
-        var allegedSlot = GetSlotForAdd(stack);
+        Slot slot = GetSlotForAdd(stack);
 
-        var currentSlot = allegedSlot == null ? GetFreeSlot() : allegedSlot;
-
-        if (currentSlot == null)
+        if (slot == null)
         {
-            return;
+            return false;
         }
 
-        currentSlot.Add(stack);
+        slot = GetFreeSlot();
+
+        if (slot == null)
+        {
+            return false;
+        }
+
+        Add(slot, stack);
+
+        return true;
     }
 
-    public void Take(ItemStack stack)
+    public bool TryTake(ItemStack stack)
     {
         foreach (var slot in _slots)
         {
-            if (slot.IsFree)
+            var succesfullTake = slot.TryTake(stack);
+
+            if (succesfullTake == false)
             {
                 continue;
             }
 
-            if (slot.CanTake(stack.Amount) == false)
-            {
-                continue;
-            }
-
-            slot.Remove(stack);
-            return;
+            return true;
         }
+
+        return false;
+    }
+
+    public void Add(Slot slot, ItemStack stack)
+    {
+        slot.TryAdd(stack);
+    }
+
+    public void Take(Slot slot, ItemStack stack)
+    {
+        slot.TryTake(stack);
     }
 
     private Slot GetFreeSlot()
@@ -60,7 +75,7 @@ public class Inventory : MonoBehaviour
 
     private Slot GetSlotForAdd(ItemStack stack)
     {
-        return _slots.FirstOrDefault(slot => slot.Item == stack.Item && slot.CanAdd(stack.Amount));
+        return _slots.FirstOrDefault(slot => slot.Item == stack.Item && slot.TryAdd(stack));
     }
 
     private Slot GetSlotPerStack(ItemStack stack)

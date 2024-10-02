@@ -1,4 +1,4 @@
-public class Weapon : Item
+public class Weapon : ItemBase
 {
 
 }

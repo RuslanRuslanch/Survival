@@ -1,14 +1,22 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public struct ItemStack
 {
-    public Item Item;
-    [Min(1)] public int Amount;
+    public ItemInfo Item;
+    public int Amount;
 
-    public ItemStack(Item item, int amount)
+    public ItemStack(ItemInfo item, int amount)
     {
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        }
+        if (item == null)
+        {
+            throw new NullReferenceException(nameof(item));
+        }
+
         Item = item;
         Amount = amount;
     }

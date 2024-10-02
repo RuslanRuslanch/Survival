@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DropView : MonoBehaviour
 {
-    [SerializeField] private Drop _drop;
+    [SerializeField] private DropBase _drop;
 
     private void OnEnable()
     {
