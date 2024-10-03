@@ -1,10 +1,9 @@
 using System;
 
-[Serializable]
-public struct ItemStack
+public class ItemStack
 {
-    public ItemInfo Item;
-    public int Amount;
+    public readonly ItemInfo Item;
+    public readonly int Amount;
 
     public ItemStack(ItemInfo item, int amount)
     {

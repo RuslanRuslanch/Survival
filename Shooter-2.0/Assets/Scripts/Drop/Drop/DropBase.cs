@@ -4,9 +4,9 @@ using UnityEngine;
 public abstract class DropBase : Entity
 {
     [Header("Stack")]
-    [SerializeField] private ItemStack _stack;
+    [SerializeField] private ItemStackInspector _stack;
 
-    public ItemStack Stack => _stack;
+    public ItemStack Stack => _stack.Stack;
 
     public event Action DropPicked;
 
@@ -16,4 +16,6 @@ public abstract class DropBase : Entity
     {
         DropPicked?.Invoke();
     }
+
+    // Invoke base.Pick() only on destroy drop gameobject
 }

@@ -5,7 +5,7 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] private Slot[] _slots;
     [Space]
-    [SerializeField] private ItemStack[] _startItems;
+    [SerializeField] private ItemStackInspector[] _startItems;
 
     private void Start()
     {
@@ -14,9 +14,9 @@ public class Inventory : MonoBehaviour
 
     private void AddStartItems()
     {
-        foreach (var stack in _startItems)
+        foreach (var item in _startItems)
         {
-            TryAdd(stack);
+            TryAdd(item.Stack);
         }
     }
 

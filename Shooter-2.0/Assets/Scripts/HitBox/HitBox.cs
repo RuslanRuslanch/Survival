@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour, IWeaponVisitor
 {
+    [Header("Entity")]
     [SerializeField] private Animal _entity;
 
     public void Visit()
