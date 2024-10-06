@@ -11,11 +11,8 @@ public abstract class DropBase : Entity
     public event Action DropPicked;
 
     public abstract bool TryPick(Player player);
-
     protected virtual void Pick()
     {
         DropPicked?.Invoke();
     }
-
-    // Invoke base.Pick() only on destroy drop gameobject
 }

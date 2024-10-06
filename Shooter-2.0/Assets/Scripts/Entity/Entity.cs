@@ -2,7 +2,16 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    public virtual void OnSpawn() { }
+    private void OnEnable()
+    {
+        OnSpawn();
+    }
 
-    public virtual void OnDespawn() { }
+    private void OnDisable()
+    {
+        OnDespawn();
+    }
+
+    protected virtual void OnSpawn() { }
+    protected virtual void OnDespawn() { }
 }

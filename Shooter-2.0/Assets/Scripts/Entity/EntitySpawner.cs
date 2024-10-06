@@ -42,6 +42,7 @@ public class EntitySpawner : MonoBehaviour
         }
     }
 
+    [ContextMenu("Spawn")]
     public void Spawn()
     {
         for (int j = 0; j < _spawnpoints.Length; j++)

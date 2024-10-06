@@ -10,8 +10,6 @@ public class EntityFactory : BaseFactory<Entity>
             throw new NullReferenceException(nameof(entity));
         }
 
-        entity.OnDespawn();
-
         _pool.Remove(entity);
 
         Destroy(entity.gameObject);
@@ -34,7 +32,6 @@ public class EntityFactory : BaseFactory<Entity>
         {
             var spawnedEntity = Instantiate(entity, position, Quaternion.identity);
 
-            spawnedEntity.OnSpawn();
             _pool.Add(spawnedEntity);
 
             objects[i] = spawnedEntity;

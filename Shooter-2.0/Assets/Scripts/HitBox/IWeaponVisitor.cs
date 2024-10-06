@@ -1,4 +1,4 @@
 ﻿public interface IWeaponVisitor
 {
-    public void Visit();
+    public void Visit(WeaponRaycastAttack attack);
 }
