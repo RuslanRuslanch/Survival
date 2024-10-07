@@ -478,7 +478,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4098e061bec9f0547a3cf404294f9c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tree: {fileID: 4174278228589453577}
+  _resource: {fileID: 4174278228589453577}
+  _despawnDelay: 3
+  _pushForce: 1
 --- !u!1 &7722552181064387592
 GameObject:
   m_ObjectHideFlags: 0

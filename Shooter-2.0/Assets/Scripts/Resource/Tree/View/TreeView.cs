@@ -1,27 +1,21 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TreeView : MonoBehaviour
+public class TreeView : ResourceView
 {
-    [SerializeField] private DefaultTree _tree;
+    [Header("Fall settings")]
+    [SerializeField, Min(0f)] private float _despawnDelay;
+    [SerializeField, Min(1f)] private float _pushForce;
 
-    private void OnEnable()
+    public override void OnMined()
     {
-        _tree.ResourceMined += OnChop;
-    }
+        var rigidbody = Resource.AddComponent<Rigidbody>();
 
-    private void OnDisable()
-    {
-        _tree.ResourceMined -= OnChop;
-    }
-
-    private void OnChop()
-    {
-        var rigidbody = _tree.AddComponent<Rigidbody>();
         var direction = Camera.main.transform.forward;
+        var velocity = direction * _pushForce;
 
-        rigidbody.AddForce(direction, ForceMode.Impulse);
+        rigidbody.AddForce(velocity, ForceMode.Impulse);
 
-        Destroy(_tree.gameObject, 3f);
+        Destroy(Resource.gameObject, _despawnDelay);
     }
 }
