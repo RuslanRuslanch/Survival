@@ -8,13 +8,15 @@ public abstract class WeaponAttack
 
     public readonly float Damage;
     public readonly float MaxDistance;
+    public readonly byte Power;
 
     private readonly int _rateInMilliseconds;
 
-    public WeaponAttack(float damage, float rate, float maxDistance)
+    public WeaponAttack(float damage, float rate, float maxDistance, byte power)
     {
         Damage = damage;
         MaxDistance = maxDistance;
+        Power = power;
 
         _rateInMilliseconds = (int)(rate * 1000f);
 

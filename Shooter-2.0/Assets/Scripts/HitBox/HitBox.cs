@@ -8,7 +8,14 @@ public class HitBox : MonoBehaviour, IWeaponVisitor
 
     public virtual void Visit(WeaponRaycastAttack attack)
     {
-        print("Axe attack");
+        print("Raycast attack");
+
+        ApplyDamage(attack, 1f);
+    }
+
+    public virtual void Visit(WeaponOverlapAttack attack)
+    {
+        print("Overlap attack");
 
         ApplyDamage(attack, 1f);
     }

@@ -43,6 +43,11 @@ public class GroundMovementLogic : MovementLogic<GroundMovementData>
 
         if (inputValue == Vector2.zero)
         {
+            if (Data.Controller.isGrounded == false)
+            {
+                return false;
+            }
+
             _direction.x = 0f;
             _direction.z = 0f;
 

@@ -7,17 +7,18 @@ public class TreeView : MonoBehaviour
 
     private void OnEnable()
     {
-        _tree.TreeChoped += OnChop;
+        _tree.ResourceMined += OnChop;
     }
 
     private void OnDisable()
     {
-        _tree.TreeChoped -= OnChop;
+        _tree.ResourceMined -= OnChop;
     }
 
-    private void OnChop(Vector3 direction)
+    private void OnChop()
     {
         var rigidbody = _tree.AddComponent<Rigidbody>();
+        var direction = Camera.main.transform.forward;
 
         rigidbody.AddForce(direction, ForceMode.Impulse);
 

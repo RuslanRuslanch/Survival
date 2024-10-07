@@ -179,6 +179,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _info: {fileID: 11400000, guid: f09dc2ff06ada744585c240dd22603fa, type: 2}
+  _damage: 10
+  _rate: 1
+  _maxDistance: 2
+  _power: 0
+  _attackCount: 1
+  _useSpread: 0
+  _spreadFactor: 0
   _searchLayers:
     serializedVersion: 2
     m_Bits: 65

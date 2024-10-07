@@ -464,6 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _startHealth: 1
+  _endurance: 0
   _amount: 10
 --- !u!114 &1810011660636181509
 MonoBehaviour:
@@ -728,7 +729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8327832160411915940}
   - component: {fileID: 4168205145004585142}
-  - component: {fileID: 1394506308273457754}
+  - component: {fileID: 2864711739336122669}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -774,7 +775,7 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: -0.1}
---- !u!114 &1394506308273457754
+--- !u!114 &2864711739336122669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

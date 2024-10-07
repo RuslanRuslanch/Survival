@@ -6,6 +6,11 @@ public class ResourceHitBox : HitBox
 
     public override void Visit(WeaponRaycastAttack attack)
     {
+        if (attack.Power < _resource.Endurance)
+        {
+            return;
+        }
+
         base.Visit(attack);
 
         _resource.Extract();

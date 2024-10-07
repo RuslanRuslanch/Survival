@@ -6,12 +6,12 @@ public class WeaponRaycastAttack : WeaponAttack
 
     private readonly bool _useSpread;
     private readonly float _spreadFactor;
-    private readonly int _attackCount;
+    private readonly byte _attackCount;
     private readonly LayerMask _searchLayers;
 
     private Vector3 Spread => _useSpread ? GetSpread() : Vector3.zero;
 
-    public WeaponRaycastAttack(float damage, float rate, float maxDistance, LayerMask searchLayers, int attackCount, bool useSpread, float spreadFactor) : base(damage, rate, maxDistance)
+    public WeaponRaycastAttack(float damage, float rate, float maxDistance, byte power, LayerMask searchLayers, byte attackCount, bool useSpread, float spreadFactor) : base(damage, rate, maxDistance, power)
     {
         _cameraTransform = Camera.main.transform;
 
@@ -85,5 +85,5 @@ public class WeaponRaycastAttack : WeaponAttack
         };
     }
 
-    public virtual void Accept(IWeaponVisitor visitor) => visitor.Visit(this);
+    protected virtual void Accept(IWeaponVisitor visitor) => visitor.Visit(this);
 }
