@@ -464,7 +464,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _startHealth: 1
-  _endurance: 0
+  _type: 2
+  _endurance: 1
   _amount: 10
 --- !u!114 &1810011660636181509
 MonoBehaviour:
@@ -773,7 +774,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.8
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: -0.1}
@@ -789,5 +790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f1d52cd7a941f438cd2df86f05bb17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _decal: {fileID: 0}
   _entity: {fileID: 4174278228589453577}
   _resource: {fileID: 4174278228589453577}

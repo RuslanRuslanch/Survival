@@ -182,13 +182,14 @@ MonoBehaviour:
   _damage: 10
   _rate: 1
   _maxDistance: 2
-  _power: 0
   _attackCount: 1
   _useSpread: 0
   _spreadFactor: 0
   _searchLayers:
     serializedVersion: 2
     m_Bits: 65
+  _target: 2
+  _power: 0
 --- !u!1 &7362451916770036808
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877be47e70d9e5c4d8824eae4b91deda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _decal: {fileID: 0}
   _entity: {fileID: 4646902757707401560}
 --- !u!1 &8228038266512461926
 GameObject:

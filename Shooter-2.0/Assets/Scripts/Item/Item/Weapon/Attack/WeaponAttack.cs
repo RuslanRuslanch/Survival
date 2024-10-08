@@ -3,27 +3,17 @@ using System.Threading.Tasks;
 public abstract class WeaponAttack
 {
     protected bool CanAttack { get; private set; } = true;
-
     protected PlayerInput Input { get; private set; }
 
     public readonly float Damage;
-    public readonly float MaxDistance;
-    public readonly byte Power;
+    public readonly float Rate;
 
-    private readonly int _rateInMilliseconds;
-
-    public WeaponAttack(float damage, float rate, float maxDistance, byte power)
+    public WeaponAttack(float damage, float rate)
     {
         Damage = damage;
-        MaxDistance = maxDistance;
-        Power = power;
-
-        _rateInMilliseconds = (int)(rate * 1000f);
+        Rate = rate;
 
         Input = new PlayerInput();
-
-        Input.Player.Attack.performed += context => TryAttack();
-
         Input.Enable();
     }
 
@@ -39,7 +29,7 @@ public abstract class WeaponAttack
     {
         CanAttack = false;
 
-        await Task.Delay(_rateInMilliseconds);
+        await Task.Delay((int)(Rate * 1000f));
 
         CanAttack = true;
     }

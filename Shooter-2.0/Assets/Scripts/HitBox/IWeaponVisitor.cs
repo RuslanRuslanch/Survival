@@ -1,5 +1,6 @@
-﻿public interface IWeaponVisitor
+using UnityEngine;
+
+public interface IWeaponVisitor
 {
-    public void Visit(WeaponRaycastAttack attack);
-    public void Visit(WeaponOverlapAttack attack);
+    public void Visit(Axe axe, RaycastHit hit);
 }
