@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WeaponRaycastFinder
@@ -8,14 +9,14 @@ public class WeaponRaycastFinder
     private readonly float _maxDistance;
     private readonly bool _useSpread;
     private readonly float _spreadFactor;
-    private readonly byte _attackCount;
+    private readonly int _attackCount;
 
 
     private readonly LayerMask _searchLayers;
 
     private Vector3 Spread => _useSpread ? GetSpread() : Vector3.zero;
 
-    public WeaponRaycastFinder(float maxDistance, bool useSpread, float spreadFactor, byte attackCount, LayerMask searchLayers)
+    public WeaponRaycastFinder(float maxDistance, bool useSpread, float spreadFactor, int attackCount, LayerMask searchLayers)
     {
         _cameraTransform = Camera.main.transform;
 

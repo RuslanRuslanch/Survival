@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class HealthBarView : HealthView
 {
+    [Header("View")]
     [SerializeField] private Slider _bar;
     [SerializeField] private Gradient _gradient;
 
@@ -12,5 +13,10 @@ public class HealthBarView : HealthView
 
         _bar.image.color = _gradient.Evaluate(normalizedHealth);
         _bar.value = normalizedHealth;
+    }
+
+    protected override void OnOver()
+    {
+        return;
     }
 }

@@ -2,24 +2,25 @@ using UnityEngine;
 
 public abstract class HealthView : MonoBehaviour
 {
-    private Health _health;
-
-    protected Health Health => _health;
+    protected Health Health { get; private set; }
 
     public void Init(Health health)
     {
-        _health = health;
+        Health = health;
     }
 
     private void OnEnable()
     {
-        _health.HealthChanged += OnChange;
+        Health.HealthChanged += OnChange;
+        Health.HealthOver += OnOver;
     }
 
     private void OnDisable()
     {
-        _health.HealthChanged -= OnChange;
+        Health.HealthChanged -= OnChange;
+        Health.HealthOver -= OnOver;
     }
 
     protected abstract void OnChange();
+    protected abstract void OnOver();
 }

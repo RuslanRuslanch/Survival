@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
-  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -188,7 +188,7 @@ MonoBehaviour:
   _searchLayers:
     serializedVersion: 2
     m_Bits: 65
-  _target: 2
+  _targetType: 0
   _power: 0
 --- !u!1 &7362451916770036808
 GameObject:

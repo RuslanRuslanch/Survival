@@ -2,12 +2,22 @@ using System;
 
 public class Ammo
 {
-    private int _savedAmmo;
+    private int _savedAmmo, _magazineAmmo;
 
     public readonly int MaxSavedAmmo;
     public readonly int MaxMagazineAmmo;
 
-    public int CurrentAmmo;
+    public int MagazineAmmo
+    {
+        get
+        {
+            return _magazineAmmo;
+        }
+        private set
+        {
+            _magazineAmmo = Math.Clamp(SavedAmmo, 0, MaxMagazineAmmo);
+        }
+    }
 
     public int SavedAmmo
     {
@@ -17,19 +27,23 @@ public class Ammo
         }
         private set
         {
-            _savedAmmo = Math.Clamp(SavedAmmo, 0, MaxTotalAmmo);
+            _savedAmmo = Math.Clamp(SavedAmmo, 0, MaxSavedAmmo);
         }
     }
 
-    public int TotalAmmo => _savedAmmo + CurrentAmmo;
+    public int TotalAmmo => _savedAmmo + MagazineAmmo;
     public int MaxTotalAmmo => MaxSavedAmmo + MaxMagazineAmmo;
-    public bool IsOver => CurrentAmmo == 0f && SavedAmmo == 0f;
+
+    public bool IsOver => MagazineAmmo == 0f && SavedAmmo == 0f;
+
+    public event Action AmmoChanged;
+    public event Action AmmoOver;
 
     public Ammo(int maxSavedAmmo, int maxMagazineAmmo, int startAmmo)
     {
         MaxSavedAmmo = maxSavedAmmo;
         MaxMagazineAmmo = maxMagazineAmmo;
-        CurrentAmmo = startAmmo;
+        MagazineAmmo = startAmmo;
     }
 
     public bool TryAdd(int amount)
@@ -51,7 +65,12 @@ public class Ammo
 
     public bool TryTake(int amount)
     {
-        if (TotalAmmo == 0)
+        if (amount < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        }
+
+        if ((MagazineAmmo - amount) < 0)
         {
             return false;
         }
@@ -63,17 +82,25 @@ public class Ammo
 
     private void Add(int amount)
     {
-        var ammoSumma = CurrentAmmo + amount;
+        var ammoSumma = MagazineAmmo + amount;
         var ammoOffset = ammoSumma - MaxMagazineAmmo;
 
         var remainsAmmo = Math.Clamp(ammoOffset, 0, MaxTotalAmmo);
 
         SavedAmmo += remainsAmmo;
+
+        AmmoChanged?.Invoke();
     }
 
     private void Take(int amount)
     {
+        MagazineAmmo -= amount;
 
+        AmmoChanged?.Invoke();
 
+        if (IsOver)
+        {
+            AmmoOver?.Invoke();
+        }
     }
 }

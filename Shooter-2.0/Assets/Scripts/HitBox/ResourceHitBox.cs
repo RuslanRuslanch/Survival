@@ -1,7 +1,4 @@
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class ResourceHitBox : HitBox
 {
@@ -16,12 +13,12 @@ public class ResourceHitBox : HitBox
         }
 
         base.Visit(axe, hit);
-
+         
         _resource.Extract();
     }
 
     private bool CanBeMined(Tool tool)
     {
-        return (tool.Power >= _resource.Endurance && tool.Target == _resource.Type) && ((_resource.Type != ResourceType.None) || (tool.Target != ResourceType.None));
+        return (tool.Power >= _resource.Endurance && tool.TargetType == _resource.Type) && ((_resource.Type != ResourceType.None) || (tool.TargetType != ResourceType.None));
     }
 }

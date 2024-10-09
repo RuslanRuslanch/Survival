@@ -13,11 +13,3 @@ public class DefaultTree : Resource
         }
     }
 }
-
-public class BigStone : Resource
-{
-    public override void Extract()
-    {
-        throw new NotImplementedException();
-    }
-}
