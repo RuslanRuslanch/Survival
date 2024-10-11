@@ -1,47 +1,46 @@
 using System;
+using TSI.Entities;
 using UnityEngine;
 
-public class EntityFactory : BaseFactory<Entity>
+namespace TSI.Factory
 {
-    public override void Despawn(Entity entity)
+    public class EntityFactory : BaseFactory<Entity>
     {
-        if (entity == null)
+        public override void Despawn(Entity entity)
         {
-            throw new NullReferenceException(nameof(entity));
+            Pool.Remove(entity);
+
+            Destroy(entity.gameObject);
         }
 
-        _pool.Remove(entity);
-
-        Destroy(entity.gameObject);
-    }
-
-    public override Entity[] Spawn(Entity entity, Vector3 position, int count)
-    {
-        if (entity == null)
+        public override Entity[] Spawn(Entity entity, Vector3 position, int count)
         {
-            throw new NullReferenceException(nameof(entity));
-        }
-        if (count < 1)
-        {
-            throw new ArgumentOutOfRangeException(nameof(count));
-        }
+            if (entity == null)
+            {
+                throw new NullReferenceException(nameof(entity));
+            }
+            if (count < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
 
-        Entity[] objects = new Entity[count];
+            Entity[] objects = new Entity[count];
 
-        for (int i = 0; i < count; i++)
-        {
-            var spawnedEntity = Instantiate(entity, position, Quaternion.identity);
+            for (int i = 0; i < count; i++)
+            {
+                var spawnedEntity = Instantiate(entity, position, Quaternion.identity);
 
-            _pool.Add(spawnedEntity);
+                Pool.Add(spawnedEntity);
 
-            objects[i] = spawnedEntity;
+                objects[i] = spawnedEntity;
+            }
+
+            return objects;
         }
 
-        return objects;
-    }
-
-    public override Entity Spawn(Entity obj, Vector3 position)
-    {
-        return Spawn(obj, position, 1)[0];
+        public override Entity Spawn(Entity obj, Vector3 position)
+        {
+            return Spawn(obj, position, 1)[0];
+        }
     }
 }

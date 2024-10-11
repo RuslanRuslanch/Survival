@@ -1,4 +1,5 @@
 using System;
+using TSI.Entities;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour, IWeaponVisitor

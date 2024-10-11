@@ -1,30 +1,33 @@
 using UnityEngine;
 
-public class DropPickerView : MonoBehaviour
+namespace TSI.Drop
 {
-    private DropPicker _picker;
-
-    public void Init(DropPicker picker)
+    public class DropPickerView : MonoBehaviour
     {
-        _picker = picker;
+        private DropPicker _picker;
 
-        _picker.DropPicked += OnPick;
-        _picker.DropSelected += OnSelect;
-    }
+        public void Init(DropPicker picker)
+        {
+            _picker = picker;
 
-    ~DropPickerView()
-    {
-        _picker.DropPicked -= OnPick;
-        _picker.DropSelected -= OnSelect;
-    }
+            _picker.DropPicked += OnPick;
+            _picker.DropSelected += OnSelect;
+        }
 
-    private void OnPick()
-    {
+        ~DropPickerView()
+        {
+            _picker.DropPicked -= OnPick;
+            _picker.DropSelected -= OnSelect;
+        }
 
-    }
+        private void OnPick()
+        {
 
-    private void OnSelect()
-    {
+        }
 
+        private void OnSelect()
+        {
+
+        }
     }
 }

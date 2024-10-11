@@ -1,4 +1,5 @@
 using System;
+using TSI.Entities;
 using UnityEngine;
 
 public abstract class Resource : HealthEntity
@@ -13,7 +14,7 @@ public abstract class Resource : HealthEntity
 
     public ResourceType Type => _type;
     public int Endurance => _endurance;
-    public float Amount => _amount;
+    public int Amount => _amount;
 
     public abstract void Extract();
 }

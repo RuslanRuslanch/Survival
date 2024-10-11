@@ -76,12 +76,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _startHealth: 10
+  _groundMovementData:
+    _transform: {fileID: 8762107668028782274}
+    _controller: {fileID: 6262762012158981919}
+    _walkSpeed: 3
+    _runSpeed: 5
+    _jumpForce: 5
+    _gravity: {x: 0, y: -9.81, z: 0}
+  _cameraMovementData:
+    _transform: {fileID: 8762107668028782274}
+    _sensivity: 10
+    _cameraTransform: {fileID: 2822027201437679638}
+  _buildingUseMaxDistance: 5
+  _buildingUseSearchLayers:
+    serializedVersion: 2
+    m_Bits: 256
   _pickerView: {fileID: 2984985173018217559}
-  _maxDistance: 10
-  _searchLayers:
+  _pickerMaxDistance: 5
+  _pickerSearchLayers:
     serializedVersion: 2
     m_Bits: 128
-  _inventory: {fileID: 5223681432775754901}
+  _allSlots: []
+  _hotSlots: []
+  _startItems: []
 --- !u!1 &4929112812879701413
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +108,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8414160870519256290}
-  - component: {fileID: 1840113336465440547}
   m_Layer: 3
   m_Name: Movement
   m_TagString: Untagged
@@ -114,26 +130,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7936959518075026528}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1840113336465440547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4929112812879701413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7968b8019d99a4facce5033fdec900, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _controller: {fileID: 6262762012158981919}
-  _characterTransform: {fileID: 8762107668028782274}
-  _walkSpeed: 3
-  _runSpeed: 5
-  _jumpForce: 5
-  _gravity: {x: -0, y: -9.81, z: -0}
-  _cameraTransform: {fileID: 2822027201437679638}
-  _sensivity: 10
 --- !u!1 &5851007374759642773
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +184,7 @@ MonoBehaviour:
   _searchLayers:
     serializedVersion: 2
     m_Bits: 65
-  _targetType: 0
+  _targetType: 2
   _power: 0
 --- !u!1 &7362451916770036808
 GameObject:
@@ -552,7 +548,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1970650795163736054, guid: 228304420fb745a40ae29415de7bd5ad, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -563,15 +560,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5991782994299605859}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5223681432775754901 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1970650795163736054, guid: 228304420fb745a40ae29415de7bd5ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 5991782994299605859}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 530e0f928eb986249ba7393f97a9272c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

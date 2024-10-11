@@ -1,23 +1,28 @@
-public class ItemDrop : DropBase
-{
-    public override bool TryPick(Player player)
-    {
-        if (player.Inventory.TryAdd(Stack) == false)
-        {
-            print("Item drop pick failed");
+using TSI.Entities.Character;
 
-            return false;
+namespace TSI.Drop
+{
+    public class ItemDrop : DropBase
+    {
+        public override bool TryPick(Player player)
+        {
+            if (player.Inventory.TryAdd(Stack) == false)
+            {
+                print("Item drop pick failed");
+
+                return false;
+            }
+
+            Pick();
+
+            return true;
         }
 
-        Pick();
+        public override void Pick()
+        {
+            print("Item drop picked");
 
-        return true;
-    }
-
-    protected override void Pick()
-    {
-        print("Item drop picked");
-
-        base.Pick();
+            DropPicked?.Invoke();
+        }
     }
 }

@@ -1,54 +1,51 @@
 using System;
+using TSI.Entities.Character;
 using UnityEngine;
 
-public class DropPicker
+namespace TSI.Drop
 {
-    private readonly PlayerInput _input; 
-    private readonly Camera _camera;
-    private readonly Player _player;
-
-    private readonly float _maxDistance;
-    private readonly LayerMask _searchLayers;
-
-    public event Action DropPicked;
-    public event Action DropSelected;
-
-    private Ray Ray => _camera.ScreenPointToRay(_input.Mouse.Position.ReadValue<Vector2>());
-
-    public DropPicker(Player player, float maxDistance, LayerMask searchLayers)
+    public class DropPicker
     {
-        _maxDistance = maxDistance;
-        _searchLayers = searchLayers;
+        private readonly Transform _cameraTransform;
+        private readonly Player _player;
 
-        _player = player;
-        _camera = Camera.main;
-        _input = new PlayerInput();
+        private readonly float _maxDistance;
+        private readonly LayerMask _searchLayers;
 
-        _input.Player.Use.performed += context => TryPick();
+        public event Action DropPicked;
+        public event Action DropSelected;
 
-        _input.Enable();
-    }
+        private Ray Ray => new Ray(_cameraTransform.position, _cameraTransform.forward);
 
-    ~DropPicker()
-    {
-        _input.Disable();
-    }
-
-    private bool TryPick()
-    {
-        if (Physics.Raycast(Ray, out var hit, _maxDistance, _searchLayers) == false)
+        public DropPicker(Player player, float maxDistance, LayerMask searchLayers)
         {
-            return false;
-        }
-        if (hit.collider.TryGetComponent(out DropBase drop) == false)
-        {
-            return false;
+            _maxDistance = maxDistance;
+            _searchLayers = searchLayers;
+            _player = player;
+
+            _cameraTransform = Camera.main.transform;
         }
 
-        drop.TryPick(_player);
+        public bool TryPick()
+        {
+            if (_player.Input.Player.Use.IsPressed() == false)
+            {
+                return false;
+            }
+            if (Physics.Raycast(Ray, out var hit, _maxDistance, _searchLayers) == false)
+            {
+                return false;
+            }
+            if (hit.collider.TryGetComponent(out DropBase drop) == false)
+            {
+                return false;
+            }
 
-        DropPicked?.Invoke();
+            drop.TryPick(_player);
 
-        return true;
+            DropPicked?.Invoke();
+
+            return true;
+        }
     }
 }
