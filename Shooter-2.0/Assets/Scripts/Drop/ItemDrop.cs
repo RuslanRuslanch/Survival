@@ -1,28 +1,28 @@
-using TSI.Entities.Character;
+using TSI.Character;
+using TSI.Item;
+using UnityEngine;
 
 namespace TSI.Drop
 {
-    public class ItemDrop : DropBase
+    public class ItemDrop : BaseDrop
     {
+        [SerializeField] private ItemStackInspector _stackInspector;
+
+        public ItemStack Stack => _stackInspector.Stack;
+
+        public override void Pick(Player player)
+        {
+            DropPickSuccess?.Invoke();
+        }
+
         public override bool TryPick(Player player)
         {
             if (player.Inventory.TryAdd(Stack) == false)
-            {
-                print("Item drop pick failed");
-
                 return false;
-            }
 
-            Pick();
+            Pick(player);
 
             return true;
-        }
-
-        public override void Pick()
-        {
-            print("Item drop picked");
-
-            DropPicked?.Invoke();
         }
     }
 }

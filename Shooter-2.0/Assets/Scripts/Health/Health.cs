@@ -1,86 +1,73 @@
 ﻿using System;
-using UnityEngine;
 
-public class Health
+namespace TSI.HP
 {
-    private float _currentHealth;
-
-    public readonly float MaxHealth;
-
-    public float CurrentHealth
+    public class Health
     {
-        get
+        private float _currentHealth;
+
+        public readonly float MaxHealth;
+
+        public float CurrentHealth
         {
-            return _currentHealth;
-        }
-        private set
-        {
-            _currentHealth = Math.Clamp(value, 0f, MaxHealth);
-        }
-    }
-
-    public bool IsOver => _currentHealth == 0f;
-    public bool IsFull => _currentHealth == MaxHealth;
-
-    public event Action HealthChanged;
-    public event Action HealthOver;
-
-    public Health(float maxHealth, float startHealth)
-    {
-        MaxHealth = maxHealth;
-
-        Add(startHealth);
-    }
-
-    public bool TryTake(float amount)
-    {
-        if (amount < 0f)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-        if (IsOver)
-        {
-            Debug.Log("Over");
-            return false;
+            get { return _currentHealth; }
+            private set { _currentHealth = Math.Clamp(value, 0, MaxHealth); }
         }
 
-        Take(amount);
+        public bool IsDead => CurrentHealth == 0f;
+        public bool IsFull => CurrentHealth == MaxHealth;
 
-        return true;
-    }
+        public event Action HealthOver;
+        public event Action HealthChanged;
 
-    public bool TryAdd(float amount)
-    {
-        if (amount < 0f)
+        public Health(float startHealth, float maxHealth)
         {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-        if (IsOver)
-        {
-            return false;
+            MaxHealth = maxHealth;
+
+            Add(startHealth);
         }
 
-        Add(amount);
-
-        return true;
-    }
-
-    private void Add(float amount)
-    {
-        CurrentHealth += amount;
-
-        HealthChanged?.Invoke();
-    }
-
-    private void Take(float amount)
-    {
-        CurrentHealth -= amount;
-
-        HealthChanged?.Invoke();
-
-        if (IsOver)
+        private void Add(float amount)
         {
-            HealthOver?.Invoke();
+            CurrentHealth += amount;
+
+            HealthChanged?.Invoke();
+        }
+
+        private void Take(float amount)
+        {
+            CurrentHealth -= amount;
+
+            HealthChanged?.Invoke();
+
+            if (IsDead)
+                HealthOver?.Invoke();
+        }
+
+        public bool TryTake(float amount)
+        {
+            if (amount < 0f)
+                throw new ArgumentOutOfRangeException(nameof(amount));
+
+            if (IsDead)
+                return false;
+
+            Take(amount);
+
+            return true;
+        }
+
+        public bool TryAdd(float amount)
+        {
+            if (amount < 0f)
+                throw new ArgumentOutOfRangeException(nameof(amount));
+
+            if (IsDead)
+                return false;
+
+            Add(amount);
+
+            return true;
         }
     }
 }

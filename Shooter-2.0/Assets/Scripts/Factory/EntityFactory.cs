@@ -1,46 +1,37 @@
-using System;
-using TSI.Entities;
-using UnityEngine;
+﻿using TSI.Entity;
 
 namespace TSI.Factory
 {
-    public class EntityFactory : BaseFactory<Entity>
+    public class EntityFactory : BaseFactory<Entity.Entity>
     {
-        public override void Despawn(Entity entity)
+        public override void Despawn(Entity.Entity entity)
         {
-            Pool.Remove(entity);
+            entity.Deinitialize();
 
             Destroy(entity.gameObject);
+
+            Pop(entity);
         }
 
-        public override Entity[] Spawn(Entity entity, Vector3 position, int count)
+        public override Entity.Entity[] Spawn(Entity.Entity entity, int count)
         {
-            if (entity == null)
-            {
-                throw new NullReferenceException(nameof(entity));
-            }
-            if (count < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count));
-            }
-
-            Entity[] objects = new Entity[count];
+            var entities = new Entity.Entity[count];
 
             for (int i = 0; i < count; i++)
             {
-                var spawnedEntity = Instantiate(entity, position, Quaternion.identity);
+                entities[i] = Instantiate(entity);
 
-                Pool.Add(spawnedEntity);
+                entities[i].Initialize();
 
-                objects[i] = spawnedEntity;
+                Push(entities[i]);
             }
 
-            return objects;
+            return entities;
         }
 
-        public override Entity Spawn(Entity obj, Vector3 position)
+        public override Entity.Entity Spawn(Entity.Entity obj)
         {
-            return Spawn(obj, position, 1)[0];
+            return Spawn(obj, 1)[0];
         }
     }
 }

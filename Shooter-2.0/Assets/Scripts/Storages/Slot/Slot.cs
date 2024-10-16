@@ -1,82 +1,71 @@
-using System;
-using TSI.Items;
+﻿using System;
+using TSI.Item;
 using UnityEngine;
 
-public class Slot : MonoBehaviour
+namespace TSI.Storages
 {
-    public int Amount { get; private set; }
-    public ItemInfo Item { get; private set; }
-
-    public bool IsFree => Item == null;
-
-    public event Action SlotCleared;
-    public event Action SlotChanged;
-
-    public bool TryAdd(ItemStack stack)
+    public class Slot : MonoBehaviour
     {
-        if (Item != stack.Item)
-        {
-            return false;
-        }
-        if ((Amount + stack.Amount) > Item.MaxAmount)
-        {
-            return false;
-        }
+        public ItemStack Stack { get; private set; }
 
-        Add(stack);
+        public bool IsFree => Stack == null;
 
-        return true;
-    }
+        public event Action ValueChanged;
+        public event Action ValueOver;
 
-    public bool TryTake(ItemStack stack)
-    {
-        if (IsFree)
+        public bool TryAdd(ItemStack stack)
         {
-            return false;
-        }
-        if (Item != stack.Item)
-        {
-            return false;
-        }
-        if ((Amount - stack.Amount) < 0)
-        {
-            return false;
+            if (IsFree)
+            {
+                Add(stack);
+
+                return true;
+            }
+
+            if (stack.Item != Stack.Item || stack.Amount + Stack.Amount > Stack.Item.StackSize)
+            {
+                return false;
+            }
+
+            Add(stack);
+
+            return true;
         }
 
-        Take(stack);
-
-        return true;
-    }
-
-    private void Add(ItemStack stack)
-    {
-        if (IsFree)
+        public bool TryTake(ItemStack stack)
         {
-            Item = stack.Item;
+            if (IsFree)
+            {
+                return false;
+            }
+
+            if (stack.Item != Stack.Item || Stack.Amount - stack.Amount < 0)
+            {
+                return false;
+            }
+
+            Take(stack);
+
+            return true;
         }
 
-        Amount += stack.Amount;
-
-        SlotChanged?.Invoke();
-    }
-
-    private void Take(ItemStack stack)
-    {
-        Amount -= stack.Amount;
-
-        SlotChanged?.Invoke();
-
-        if ((Amount - stack.Amount) == 0)
+        private void Add(ItemStack stack)
         {
-            Clear();
+            Stack += stack;
+
+            ValueChanged?.Invoke();
         }
-    }
 
-    private void Clear()
-    {
-        Item = null;
-        Amount = 0;
+        private void Take(ItemStack stack)
+        {
+            Stack -= stack;
 
-        SlotCleared?.Invoke();
+            ValueChanged?.Invoke();
+
+            if (Stack.Amount == 0)
+            {
+                ValueOver?.Invoke();
+            }
+        }
     }
 }

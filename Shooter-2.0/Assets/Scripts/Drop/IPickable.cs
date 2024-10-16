@@ -1,7 +1,7 @@
-using TSI.Entities.Character;
+﻿using TSI.Character;
 
 public interface IPickable
 {
     public bool TryPick(Player player);
-    public void Pick();
+    public void Pick(Player player);
 }

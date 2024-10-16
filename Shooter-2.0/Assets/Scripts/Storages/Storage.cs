@@ -1,70 +1,69 @@
-using TSI.Items;
+using System;
+using System.Linq;
+using TSI.Item;
 
 namespace TSI.Storages
 {
-    public class Storage
+    public class Storage : IStorage
     {
-        protected Slot[] AllSlots { get; private set; }
+        public readonly Slot[] Slots;
 
-        public Storage(Slot[] allSlots)
+        public event Action AddingFailed;
+        public event Action TakingFailed;
+
+        public Storage(Slot[] slots)
         {
-            AllSlots = allSlots;
+            Slots = slots;
+        }
+
+        public Slot Get(ItemInfo item)
+        {
+            return Slots.FirstOrDefault(slot => slot.Stack.Item == item);
+        }
+
+        public Slot Get(ItemStack stack)
+        {
+            return Slots.FirstOrDefault(slot => slot.Stack.Item == stack.Item && slot.Stack.Amount + stack.Amount <= stack.Item.StackSize);
         }
 
         public bool TryAdd(ItemStack stack)
         {
-            foreach (var slot in AllSlots)
+            if (Slots.Length == 0) 
+                return false;
+
+            foreach (var slot in Slots)
             {
-                if (slot.IsFree)
-                {
-                    slot.TryAdd(stack);
+                var succesfull = slot.TryAdd(stack);
 
-                    return true;
-                }
-
-                var succesfullAdd = slot.TryAdd(stack);
-
-                if (succesfullAdd == false)
-                {
+                if (succesfull == false)
                     continue;
-                }
 
                 return true;
             }
+
+            AddingFailed?.Invoke();
 
             return false;
         }
 
         public bool TryTake(ItemStack stack)
         {
-            foreach (var slot in AllSlots)
-            {
-                var succesfullTake = slot.TryTake(stack);
+            if (Slots.Length == 0)
+                return false;
 
-                if (succesfullTake == false)
-                {
+            foreach (var slot in Slots)
+            {
+                var succesfull = slot.TryTake(stack);
+
+                if (succesfull == false)
                     continue;
-                }
 
                 return true;
             }
 
+            TakingFailed?.Invoke();
+
             return false;
-        }
-
-        public Slot GetSlot(ItemInfo searchItem)
-        {
-            foreach (var slot in AllSlots)
-            {
-                if (slot.IsFree || slot.Item != searchItem)
-                {
-                    continue;
-                }
-
-                return slot;
-            }
-
-            return null;
         }
     }
 }

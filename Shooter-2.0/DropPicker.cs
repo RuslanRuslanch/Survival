@@ -1,0 +1,40 @@
+using TSI;
+using UnityEngine;
+
+public class DropPicker
+{
+    private readonly Transform _cameraTransform;
+
+    private DropPickerParameters _parameters;
+
+    private Ray Ray => new Ray(_cameraTransform.position, _cameraTransform.forward);
+    private PlayerInput Input => AppContext.Instance.PlayerInput;
+
+    public DropPicker(DropPickerParameters parameters)
+    {
+        _cameraTransform = Camera.main.transform;
+
+        _parameters = parameters;
+    }
+
+    public bool TryPick()
+    {
+        if (Input.Player.Use.IsPressed() == false)
+            return false;
+
+        if (Physics.SphereCast(Ray, _parameters.CheckRadius, out var hit, _parameters.MaxRayDistance) == false)
+            return false;
+
+        if (hit.collider.TryGetComponent(out IPickable pickable) == false)
+            return false;
+
+        Pick(pickable);
+
+        return true;
+    }
+
+    private void Pick(IPickable pickable)
+    {
+        pickable.TryPick(_parameters.Player);
+    }
+}

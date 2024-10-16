@@ -1,21 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TSI.Factory 
+namespace TSI.Factory
 {
-    public abstract class BaseFactory<Object> : MonoBehaviour where Object : MonoBehaviour
+    public abstract class BaseFactory<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected readonly List<Object> Pool = new List<Object>();
+        public static BaseFactory<T> Instance;
 
-        public static BaseFactory<Object> Instance;
+        private readonly List<T> _entities = new List<T>();
 
-        private void OnEnable()
+        public void Initialize()
         {
-            Instance = this;
+            Instance ??= this;
         }
 
-        public abstract Object[] Spawn(Object obj, Vector3 position, int count);
-        public abstract Object Spawn(Object obj, Vector3 position);
-        public abstract void Despawn(Object obj);
+        public void Push(T obj)
+        {
+            _entities.Add(obj);
+        }
+
+        public void Pop(T obj)
+        {
+            _entities.Remove(obj);
+        }
+
+        public abstract T[] Spawn(T obj, int count);
+        public abstract T Spawn(T obj);
+        public abstract void Despawn(T obj);
     }
 }

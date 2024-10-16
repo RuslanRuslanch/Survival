@@ -1,27 +1,42 @@
-using TSI.Storages;
+﻿using System;
+using System.Linq;
+using TSI.Item;
+using UnityEngine;
 
-public class SlotSwitcher
+namespace TSI.Storages
 {
-    public Slot Slot { get; private set; }
-
-    private readonly Inventory _inventory;
-
-    public bool TrySwitch()
+    public class SlotSwitcher
     {
-        var slot = _inventory;
+        public Slot SelectedSlot { get; private set; }
+        public BaseItem SelectedItem { get; private set; }
 
-        if (slot == null)
+        private readonly HotSlot[] _hotSlots;
+
+        public event Action SlotSwitched;
+
+        public SlotSwitcher(HotSlot[] hotSlots)
         {
-            return false;
+            _hotSlots = hotSlots;
         }
 
-        //Switch(slot);
+        public bool TrySwitch()
+        {
+            var slot = _hotSlots.FirstOrDefault(slot => Input.GetKeyDown(slot.Key));
 
-        return true;
-    }
+            if (slot == null)
+                return false;
 
-    private void Switch(Slot newSlot)
-    {
-        Slot = newSlot;
+            Switch(slot);
+
+            return true;
+        }
+
+        private void Switch(Slot slot)
+        {
+            SelectedSlot = slot;
+            SelectedItem = ItemCache.Instance.Get(slot.Stack.Item);
+
+            SlotSwitched?.Invoke();
+        }
     }
 }
