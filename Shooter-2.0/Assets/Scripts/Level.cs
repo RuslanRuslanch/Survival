@@ -1,4 +1,4 @@
-﻿using TSI.Entity;
+﻿using TSI.Spawners;
 using UnityEngine;
 
 namespace TSI

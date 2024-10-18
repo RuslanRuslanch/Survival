@@ -1,5 +1,5 @@
 ﻿using TSI.Item;
-using TSI.Storages;
+using TSI.Storage;
 
 public interface IStorage
 {

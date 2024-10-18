@@ -1,36 +1,31 @@
 using UnityEngine;
 
-namespace TSI.Storages
+namespace TSI.Storage
 {
     public class SlotView : MonoBehaviour
     {
-        public Slot Slot { get; private set; }
-
-        public void Init(Slot slot)
-        {
-            Slot = slot;
-        }
+        [SerializeField] private Slot _slot;
 
         private void OnEnable()
         {
-            Slot.ValueChanged += OnChange;
-            Slot.ValueOver += OnOver;
+            _slot.ValueChanged += OnChange;
+            _slot.ValueOver += OnOver;
         }
 
         private void OnDisable()
         {
-            Slot.ValueChanged -= OnChange;
-            Slot.ValueOver -= OnOver;
+            _slot.ValueChanged -= OnChange;
+            _slot.ValueOver -= OnOver;
         }
 
         public void OnChange()
         {
-
+            print($"{_slot.Stack.Item} : {_slot.Stack.Amount}");
         }
 
         public void OnOver()
         {
-
+            print($"Resource in [{_slot}] slot over");
         }
     }
 }

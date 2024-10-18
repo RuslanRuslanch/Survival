@@ -2,9 +2,9 @@
 
 namespace TSI.Factory
 {
-    public class EntityFactory : BaseFactory<Entity.Entity>
+    public class EntityFactory : BaseFactory<BaseEntity>
     {
-        public override void Despawn(Entity.Entity entity)
+        public override void Despawn(BaseEntity entity)
         {
             entity.Deinitialize();
 
@@ -13,9 +13,9 @@ namespace TSI.Factory
             Pop(entity);
         }
 
-        public override Entity.Entity[] Spawn(Entity.Entity entity, int count)
+        public override BaseEntity[] Spawn(BaseEntity entity, int count)
         {
-            var entities = new Entity.Entity[count];
+            var entities = new BaseEntity[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -29,7 +29,7 @@ namespace TSI.Factory
             return entities;
         }
 
-        public override Entity.Entity Spawn(Entity.Entity obj)
+        public override BaseEntity Spawn(BaseEntity obj)
         {
             return Spawn(obj, 1)[0];
         }

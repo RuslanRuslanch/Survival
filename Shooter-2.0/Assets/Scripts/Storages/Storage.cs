@@ -2,18 +2,47 @@ using System;
 using System.Linq;
 using TSI.Item;
 
-namespace TSI.Storages
+namespace TSI.Storage
 {
     public class Storage : IStorage
     {
+        public bool IsOpened { get; private set; }
+
         public readonly Slot[] Slots;
 
         public event Action AddingFailed;
         public event Action TakingFailed;
 
+        public event Action StorageOpened;
+        public event Action StorageClosed;
+
         public Storage(Slot[] slots)
         {
             Slots = slots;
+
+            Close();
+        }
+
+        public Storage(Slot[] slots, ItemStackInspector[] startItems)
+        {
+            Slots = slots;
+
+            AddStartItems(startItems);
+            Close();
+        }
+
+        public void Open()
+        {
+            IsOpened = true;
+
+            StorageOpened?.Invoke();
+        }
+
+        public void Close()
+        {
+            IsOpened = false;
+
+            StorageClosed?.Invoke();
         }
 
         public Slot Get(ItemInfo item)
@@ -28,9 +57,6 @@ namespace TSI.Storages
 
         public bool TryAdd(ItemStack stack)
         {
-            if (Slots.Length == 0) 
-                return false;
-
             foreach (var slot in Slots)
             {
                 var succesfull = slot.TryAdd(stack);
@@ -48,9 +74,6 @@ namespace TSI.Storages
 
         public bool TryTake(ItemStack stack)
         {
-            if (Slots.Length == 0)
-                return false;
-
             foreach (var slot in Slots)
             {
                 var succesfull = slot.TryTake(stack);
@@ -64,6 +87,14 @@ namespace TSI.Storages
             TakingFailed?.Invoke();
 
             return false;
+        }
+
+        private void AddStartItems(ItemStackInspector[] startItems)
+        {
+            foreach (var item in startItems.Select(view => view.Stack))
+            {
+                TryAdd(item);
+            }
         }
     }
 }

@@ -5,14 +5,8 @@ namespace TSI.Item
 {
     public class ItemCache : MonoBehaviour
     {
+        [Header("Cached items list")]
         [SerializeField] private BaseItem[] _cache;
-
-        public static ItemCache Instance;
-
-        public void Initialize()
-        {
-            Instance ??= this;
-        }
 
         public BaseItem Get(ItemInfo info)
         {

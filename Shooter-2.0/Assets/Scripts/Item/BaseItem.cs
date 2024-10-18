@@ -11,5 +11,15 @@ namespace TSI.Item
 
         public abstract bool TryUse();
         public abstract void Use();
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

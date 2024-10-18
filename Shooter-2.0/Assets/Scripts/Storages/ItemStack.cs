@@ -11,12 +11,12 @@
             Amount = amount;
         }
 
-        public static ItemStack operator +(ItemStack lhs, ItemStack rhs)
+        public static ItemStack operator + (ItemStack lhs, ItemStack rhs)
         {
             return new ItemStack(lhs.Item, lhs.Amount + rhs.Amount);
         }
 
-        public static ItemStack operator -(ItemStack lhs, ItemStack rhs)
+        public static ItemStack operator - (ItemStack lhs, ItemStack rhs)
         {
             return new ItemStack(lhs.Item, lhs.Amount - rhs.Amount);
         }

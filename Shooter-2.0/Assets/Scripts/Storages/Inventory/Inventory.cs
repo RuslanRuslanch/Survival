@@ -1,8 +1,8 @@
-using UnityEngine;
-using TSI.Item;
 using System.Linq;
+using TSI.Item;
+using UnityEngine;
 
-namespace TSI.Storages
+namespace TSI.Storage
 {
     public class Inventory : Storage
     {
@@ -13,11 +13,14 @@ namespace TSI.Storages
             HotSlots = hotSlots;
         }
 
-        public BaseItem GetHotSlot(KeyCode key)
+        public Inventory(ItemStackInspector[] startItems, HotSlot[] hotSlots, Slot[] slots) : base(slots, startItems)
         {
-            var item = HotSlots.FirstOrDefault(slot => slot.Key == key).Stack.Item;
+            HotSlots = hotSlots;
+        }
 
-            return ItemCache.Instance.Get(item);
+        public Slot GetHotSlot(KeyCode key)
+        {
+            return HotSlots.FirstOrDefault(slot => slot.HotKey == key);
         }
     }
 }

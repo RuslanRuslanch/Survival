@@ -1,19 +1,18 @@
-using System.Linq;
 using TSI.Character.Movement;
-using TSI.Character.State;
 using TSI.Drop;
 using TSI.Entity;
-using TSI.Storages;
+using TSI.FSM;
+using TSI.FSM.State;
+using TSI.Item;
+using TSI.Storage;
 using UnityEngine;
 
 namespace TSI.Character
 {
     [RequireComponent(typeof(CharacterController))]
-    public class Player : HealthEntity, IStateSwitcher
+    public class Player : HealthEntity
     {
-        private PlayerState[] _allStates;
-
-        private PlayerState _currentState;
+        private BaseFSM _fsm;
 
         public Inventory Inventory { get; private set; }
 
@@ -24,74 +23,39 @@ namespace TSI.Character
         [SerializeField] private DropPickerParameters _dropPickerParameters;
 
         [Header("Inventory")]
+        [SerializeField] private ItemCache _itemCache;
+        [SerializeField] private StorageView _storageView;
+        [Space]
         [SerializeField] private InventoryParameters _inventoryParameters;
 
         public override void Initialize()
         {
-            Inventory = new Inventory(_inventoryParameters.HotSlots, _inventoryParameters.AllSlots);
+            Inventory = new Inventory(_inventoryParameters.StartItems, _inventoryParameters.HotSlots, _inventoryParameters.AllSlots);
 
-            var movement = new PlayerMovement(new GroundPlayerMovementLogic(_playerMovementParameters, GetComponent<CharacterController>(), transform, Camera.main.transform));
+            var controller = GetComponent<CharacterController>();
 
+            var movement = new PlayerGroundMovement(_playerMovementParameters,  controller, transform, Camera.main.transform);
             var dropPicker = new DropPicker(_dropPickerParameters);
+            var slotSwitcher = new SlotSwitcher(_inventoryParameters.HotSlots, _itemCache);
+            var inventoryUser = new StorageUser(Inventory);
 
-            _allStates = new PlayerState[]
+            var allStates = new FSMState[]
             {
-                new GroundMoveState(this, movement, null, dropPicker)
+                new PlayerDefaultState(_fsm, dropPicker, slotSwitcher, movement, inventoryUser),
+                new PlayerSwimState(_fsm, movement),
+                new PlayerBuildState(_fsm),
             };
 
-            _currentState = _allStates[0];
+            _fsm = new BaseFSM(allStates);
+
+            _storageView.Initialize(Inventory);
 
             base.Initialize();
         }
 
-        public void SelectItem()
-        {
-            _currentState.SelectItem();
-        }
-
-        public void UseItem()
-        {
-            _currentState.UseItem();
-        }
-
-        public void Translate()
-        {
-            _currentState.Translate();
-        }
-
-        public void Rotate()
-        {
-            _currentState.Rotate();
-        }
-
-        public void PickUp()
-        {
-            _currentState.PickUp();
-        }
-
         private void Update()
         {
-            Rotate();
-
-            SelectItem();
-            UseItem();
-
-            PickUp();
-        }
-
-        private void FixedUpdate()
-        {
-            Translate();
-        }
-
-        public void SwitchState<T>() where T : PlayerState
-        {
-            var state = _allStates.FirstOrDefault(state => state is T);
-
-            _currentState.Stop();
-            state.Start();
-
-            _currentState = state;
+            _fsm.CurrentState?.Update();
         }
     }
 }

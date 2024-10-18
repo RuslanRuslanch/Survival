@@ -2,7 +2,7 @@
 
 namespace TSI.Entity
 {
-    public class Entity : MonoBehaviour
+    public class BaseEntity : MonoBehaviour
     {
         public virtual void Initialize() { }
         public virtual void Deinitialize() { }

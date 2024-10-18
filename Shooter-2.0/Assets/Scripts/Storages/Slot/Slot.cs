@@ -2,7 +2,7 @@
 using TSI.Item;
 using UnityEngine;
 
-namespace TSI.Storages
+namespace TSI.Storage
 {
     public class Slot : MonoBehaviour
     {
@@ -51,7 +51,14 @@ namespace TSI.Storages
 
         private void Add(ItemStack stack)
         {
-            Stack += stack;
+            if (IsFree)
+            {
+                Stack = stack;
+            }
+            else
+            {
+                Stack += stack;
+            }
 
             ValueChanged?.Invoke();
         }

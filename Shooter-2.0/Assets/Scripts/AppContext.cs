@@ -15,14 +15,12 @@ namespace TSI
 
         [Header("Scene Deps")]
         [SerializeField] private EntityFactory _entityFactory;
-        [SerializeField] private ItemCache _itemCache;
 
         private void Start()
         {
             Instance ??= this;
 
             _entityFactory.Initialize();
-            _itemCache.Initialize();
 
             _level.Initialize();
         }

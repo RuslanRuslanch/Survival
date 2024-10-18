@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TSI.Character.Movement
 {
-    public class GroundPlayerMovementLogic : PlayerMovementLogic
+    public class PlayerGroundMovement : PlayerMovement
     {
         private const float MinRotationX = -MaxRotationX;
         private const float MaxRotationX = 90f;
@@ -20,7 +20,7 @@ namespace TSI.Character.Movement
 
         private float CurrentSpeed => GetCurrentSpeed();
 
-        public GroundPlayerMovementLogic(PlayerMovementParameters parameters, CharacterController controller, Transform characterTransform, Transform cameraTransform) : base(parameters)
+        public PlayerGroundMovement(PlayerMovementParameters parameters, CharacterController controller, Transform characterTransform, Transform cameraTransform) : base(parameters)
         {
             _controller = controller;
             _characterTransform = characterTransform;
@@ -65,14 +65,12 @@ namespace TSI.Character.Movement
 
         private void Rotate(Vector2 delta)
         {
-            delta *= Parameters.Sensivity * Time.deltaTime;
-
-            var cameraRotation = _cameraTransform.localRotation;
+            delta *= Parameters.Sensivity * Time.fixedDeltaTime;
 
             _rotationX -= delta.y;
             _rotationX = Math.Clamp(_rotationX, MinRotationX, MaxRotationX);
 
-            _cameraTransform.localRotation = Quaternion.Euler(_rotationX, cameraRotation.y, cameraRotation.z);
+            _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
             _characterTransform.Rotate(Vector3.up * (Parameters.RotationSpeed * delta.x));
         }
 

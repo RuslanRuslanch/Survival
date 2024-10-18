@@ -2,31 +2,18 @@
 
 namespace TSI.Character.Movement
 {
-    public class PlayerMovement
+    public abstract class PlayerMovement
     {
-        private PlayerMovementLogic _logic;
+        public readonly PlayerMovementParameters Parameters;
 
-        public PlayerMovement(PlayerMovementLogic logic)
+        public PlayerInput Input => AppContext.Instance.PlayerInput;
+
+        protected PlayerMovement(PlayerMovementParameters parameters)
         {
-            SwitchLogic(logic);
+            Parameters = parameters;
         }
 
-        public void Translate()
-        {
-            _logic.TryTranslate();
-        }
-
-        public void Rotate()
-        {
-            _logic.TryRotate();
-        }
-
-        public void SwitchLogic(PlayerMovementLogic logic)
-        {
-            if (logic == null)
-                throw new NullReferenceException(nameof(logic));
-
-            _logic = logic;
-        }
+        public abstract bool TryTranslate();
+        public abstract bool TryRotate();
     }
 }

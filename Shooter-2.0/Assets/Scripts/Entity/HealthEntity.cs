@@ -3,7 +3,7 @@ using TSI.HP;
 
 namespace TSI.Entity
 {
-    public class HealthEntity : Entity, IHealthable
+    public class HealthEntity : BaseEntity, IHealthable
     {
         public Health Health { get; private set; }
 

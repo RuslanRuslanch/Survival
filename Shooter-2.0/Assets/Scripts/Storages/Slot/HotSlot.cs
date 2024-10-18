@@ -1,14 +1,11 @@
 using UnityEngine;
 
-namespace TSI.Storages
+namespace TSI.Storage
 {
     public class HotSlot : Slot
     {
-        public readonly KeyCode Key;
+        [SerializeField] private KeyCode _hotKey;
 
-        public HotSlot(KeyCode key)
-        {
-            Key = key;
-        }
+        public KeyCode HotKey => _hotKey;
     }
 }

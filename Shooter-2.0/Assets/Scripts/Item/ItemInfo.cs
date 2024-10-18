@@ -13,11 +13,16 @@ namespace TSI.Item
         [SerializeField] private Sprite _icon;
 
         [Header("Stack")]
-        [SerializeField, Min(0)] private int _stackSize = 1;
+        [SerializeField, Min(1)] private int _stackSize = 1;
 
         public string Title => _title;
         public string[] Description => _description;
         public int StackSize => _stackSize;
         public Sprite Icon => _icon;
+
+        public override string ToString()
+        {
+            return _title.ToString();
+        }
     }
 }

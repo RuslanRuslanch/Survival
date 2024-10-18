@@ -1,4 +1,3 @@
-using TSI;
 using UnityEngine;
 
 namespace TSI.Drop
@@ -23,7 +22,7 @@ namespace TSI.Drop
             if (Input.Player.Use.IsPressed() == false)
                 return false;
 
-            if (Physics.SphereCast(Ray, _parameters.CheckRadius, out var hit, _parameters.MaxRayDistance) == false)
+            if (Physics.SphereCast(Ray, _parameters.CheckRadius, out var hit, _parameters.MaxRayDistance, _parameters.SearchLayers) == false)
                 return false;
 
             if (hit.collider.TryGetComponent(out IPickable pickable) == false)
